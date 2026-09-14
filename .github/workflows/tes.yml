@@ -1,23 +1,46 @@
-name: tes
+name: Compile Kernel POCO F4 GT
 
 on:
-  workflow_dispatch: # Membuat tombol manual "Run Workflow" muncul di menu Actions
+  workflow_dispatch:
 
 jobs:
   build-kernel:
-    runs-on: ubuntu-22.04 # Meminjam komputer server Linux Ubuntu gratis dari GitHub
-    
+    runs-on: ubuntu-22.04
+
     steps:
     - name: Ambil Bahan Baku (Source Code)
       uses: actions/checkout@v4
 
-    - name: Siapkan Alat Masak & Library Linux
+    - name: Siapkan Lingkungan Kerja & Library Linux
       run: |
         sudo apt-get update
-        sudo apt-get install -y bc build-essential binfmt-support libssl-dev ccache
+        sudo apt-get install -y bc build-essential binfmt-support libssl-dev ccache libelf-dev bison flex
 
-    - name: Cek Struktur Folder
+    - name: Unduh Google Clang Compiler Resmi
       run: |
-        echo "Robot berhasil menyalakan komputer dan siap memasak!"
-        ls -la
+        mkdir -p $GITHUB_WORKSPACE/clang
+        cd $GITHUB_WORKSPACE/clang
+        wget -q https://googlesource.com
+        tar -xzf clang-r450784d.tar.gz
+        echo "$GITHUB_WORKSPACE/clang/bin" >> $GITHUB_PATH
+
+    - name: Mulai Menggabungkan Konfigurasi dan Memasak
+      run: |
+        export ARCH=arm64
+        export SUBARCH=arm64
+        export CROSS_COMPILE=aarch64-linux-gnu-
+        export CC=clang
+        
+        # 1. Menginisialisasi basis konfigurasi utama GKI Google
+        make O=out ARCH=arm64 gki_defconfig
+        
+        # 2. Menggabungkan bumbu khusus milik POCO F4 GT (vendor ingres)
+        cat arch/arm64/configs/vendor/ingres_GKI.config >> out/.config
+        
+        # 3. Proses memasak utama menggunakan kekuatan prosesor server cloud
+        make O=out ARCH=arm64 -j$(nproc)
+
+    - name: Cari dan Ambil Hasil Masakan (Image)
+      run: |
+        ls -la out/arch/arm64/boot/
         
