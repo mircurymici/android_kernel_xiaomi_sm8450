@@ -18,7 +18,6 @@ jobs:
 
     - name: Unduh Google Clang Compiler Resmi (Metode Git)
       run: |
-        # Mengunduh langsung prebuilt clang r450784d dari LineageOS mirror yang stabil untuk kernel 5.10
         git clone https://github.com --depth=1 $GITHUB_WORKSPACE/clang
         echo "$GITHUB_WORKSPACE/clang/bin" >> $GITHUB_PATH
 
