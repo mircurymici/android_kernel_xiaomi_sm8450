@@ -18,7 +18,7 @@ jobs:
 
     - name: Unduh Google Clang Compiler Resmi (Metode Git)
       run: |
-        git clone https://github.com --depth=1 $GITHUB_WORKSPACE/clang
+        git clone https://gitlab.com --depth=1 $GITHUB_WORKSPACE/clang
         echo "$GITHUB_WORKSPACE/clang/bin" >> $GITHUB_PATH
 
     - name: Mulai Menggabungkan Konfigurasi dan Memasak
