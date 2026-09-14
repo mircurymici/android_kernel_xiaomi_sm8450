@@ -16,10 +16,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y bc build-essential binfmt-support libssl-dev ccache libelf-dev bison flex
 
-    - name: Unduh Google Clang Compiler Resmi
+        - name: Unduh Google Clang Compiler Resmi
       run: |
         mkdir -p $GITHUB_WORKSPACE/clang
         cd $GITHUB_WORKSPACE/clang
+        # Pastikan URL di bawah ini tertulis utuh dalam satu baris penuh tanpa terpotong
         wget -q https://googlesource.com
         tar -xzf clang-r450784d.tar.gz
         echo "$GITHUB_WORKSPACE/clang/bin" >> $GITHUB_PATH
