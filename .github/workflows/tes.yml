@@ -1,0 +1,23 @@
+name: tes
+
+on:
+  workflow_dispatch: # Membuat tombol manual "Run Workflow" muncul di menu Actions
+
+jobs:
+  build-kernel:
+    runs-on: ubuntu-22.04 # Meminjam komputer server Linux Ubuntu gratis dari GitHub
+    
+    steps:
+    - name: Ambil Bahan Baku (Source Code)
+      uses: actions/checkout@v4
+
+    - name: Siapkan Alat Masak & Library Linux
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc build-essential binfmt-support libssl-dev ccache
+
+    - name: Cek Struktur Folder
+      run: |
+        echo "Robot berhasil menyalakan komputer dan siap memasak!"
+        ls -la
+        
